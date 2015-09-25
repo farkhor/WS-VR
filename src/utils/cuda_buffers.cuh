@@ -137,14 +137,14 @@ public:
 	    return *this;
 	}
 
-	device_buffer<T>& copy_section( host_pinned_buffer<T>& srcHostBuffer, std::size_t offset, std::size_t nSrcElems, cudaStream_t sss = 0 ) {
+	device_buffer<T>& copy_section( host_pinned_buffer<T>& srcHostBuffer, std::size_t offset, std::size_t nSrcElems, cudaStream_t sss = 0, std::size_t dstOffset = 0 ) {
 		 if( nElems == 0 ) {
 			 construct( nSrcElems );
-			 CUDAErrorCheck( cudaMemcpyAsync( ptr, srcHostBuffer.get_ptr() + offset, nSrcElems * sizeof(T), cudaMemcpyHostToDevice, sss ) );
+			 CUDAErrorCheck( cudaMemcpyAsync( ptr + dstOffset, srcHostBuffer.get_ptr() + offset, nSrcElems * sizeof(T), cudaMemcpyHostToDevice, sss ) );
 		 }
 		 else {
 			 size_t copySize = ( nSrcElems * sizeof(T) < this->sizeInBytes() ) ? nSrcElems * sizeof(T) : this->sizeInBytes();
-			 CUDAErrorCheck( cudaMemcpyAsync( ptr, srcHostBuffer.get_ptr() + offset, copySize, cudaMemcpyHostToDevice, sss ) );
+			 CUDAErrorCheck( cudaMemcpyAsync( ptr + dstOffset, srcHostBuffer.get_ptr() + offset, copySize, cudaMemcpyHostToDevice, sss ) );
 		 }
 		return *this;
 	}

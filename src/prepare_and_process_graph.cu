@@ -155,12 +155,12 @@ void prepare_and_process_graph(
 	 * FRAMEWORK DECIDES WHERE TO PUT THE BUFFERS VIA AN ESTIMATION.
 	 ********************************************************************************/
 
-	bool HaveHostHub = true; // For more than 2 devices, use the host as the hub.
+	bool HaveHostHub = ( nDevices > 1 ) && ( InterDeviceCommunication == VR || InterDeviceCommunication == VRONLINE ); // For more than 2 devices, use the host as the hub.
 	if( nDevices == 2 && ( InterDeviceCommunication == VR || InterDeviceCommunication == VRONLINE ) ) {
 		HaveHostHub = false;
 		for( uint devID = 0; devID < nDevices; ++devID ) {
 			cuda_device< uint, Vertex, Edge, Vertex_static >& devInHand = computingDevices.at( devID );
-			unsigned long long requiredSizes = nVertices * ( sizeof(Vertex) + sizeof(Vertex_static) ) +	// I am aware that the size of an empty structure can be 1.
+			unsigned long long requiredSizes = nVertices * ( sizeof(Vertex) + sizeof(Vertex_static) ) +	// Aware: the size of an empty structure can be 1.
 					devInHand.nDedicatedEdges * ( sizeof(Edge) + sizeof(uint) ) +
 					( devInHand.nDedicatedVertices + 1 ) * sizeof(uint) +
 					devInHand.nVerticesToSend * ( sizeof(Vertex) + sizeof(uint) );	// Outbox
@@ -247,10 +247,10 @@ void prepare_and_process_graph(
 
 		// If MS, fill up the box indices required.
 		if( nDevices > 1 && InterDeviceCommunication == MS ) {
-			uint iii = 0;
+			std::size_t iii = 0;
 			for( uint trgtDevID = 0; trgtDevID < nDevices; ++trgtDevID ) {
 				if( trgtDevID != devID ) {
-					devInHand.inboxIndices_odd.copy_section( computingDevices.at( trgtDevID ).tmpHostIndices, iii, computingDevices.at( trgtDevID ).tmpHostIndices.size(), devInHand.devStream );
+					devInHand.inboxIndices_odd.copy_section( computingDevices.at( trgtDevID ).tmpHostIndices, 0, computingDevices.at( trgtDevID ).tmpHostIndices.size(), devInHand.devStream, iii );
 					iii += computingDevices.at( trgtDevID ).tmpHostIndices.size();
 				}
 				else {
