@@ -2,6 +2,7 @@
 This repository contains a CUDA-based multi-GPU vertex-centric graph processing framework based on Warp Segmentation and Vertex Refinement techniques.
 The options for this framework can be revealed by executing the program with no arguments.
 The vertex and edge structures and processing functions work similar to CSR-based graph processing in [CuSha](http://farkhor.github.io/CuSha/).
+Also, the make files are configured for sm 3.5. Please adjust this option according to your device CUDA compute capability.
 
 ###Citing (temporary)###
 ```shell
