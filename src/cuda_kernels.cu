@@ -235,7 +235,7 @@ __global__ void dev_Warp_Segmentation_multi_gpu(
 	}
 	if( InterDeviceCommunication == VR ) {
 
-		bool updated = update_condition( fetchedVertexValues + tidWithinCTA, VertexValue + multiDeviceVertexID  );
+		const bool updated = update_condition( fetchedVertexValues + tidWithinCTA, VertexValue + multiDeviceVertexID  );
 		if( __any( updated ) ) {
 			const bool remoteNeeded = ( fetchedEdgesIndicesInitial[ tidWithinCTA ] & 0x80000000 );
 			const uint warpBallot = __ballot( updated & remoteNeeded );
