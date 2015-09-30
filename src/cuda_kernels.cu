@@ -222,7 +222,7 @@ __global__ void dev_Warp_Segmentation_multi_gpu(
 				indexPosition = atomicAdd( movingIndex, nUpdates );
 			}
 			indexPosition = __shfl( indexPosition, 0 );
-			const int laneMask =  0xFFFFFFFF >> ( WARP_SIZE - laneID ) ;
+			uint laneMask; asm( "mov.u32 %0, %lanemask_lt;" : "=r"(laneMask) );	//const uint laneMask =  0xFFFFFFFF >> ( WARP_SIZE - laneID ) ;
 			const int positionToWrite = indexPosition + __popc( warpBallot & laneMask );
 			if( updated ) {
 				VertexValue[ multiDeviceVertexID ] = fetchedVertexValues[ tidWithinCTA ];
@@ -248,7 +248,7 @@ __global__ void dev_Warp_Segmentation_multi_gpu(
 					indexPosition = atomicAdd( movingIndex, nUpdates );
 				}
 				indexPosition = __shfl( indexPosition, 0 );
-				const int laneMask =  0xFFFFFFFF >> ( WARP_SIZE - laneID ) ;
+				uint laneMask; asm( "mov.u32 %0, %lanemask_lt;" : "=r"(laneMask) );	//const uint laneMask =  0xFFFFFFFF >> ( WARP_SIZE - laneID ) ;
 				const int positionToWrite = indexPosition + __popc( warpBallot & laneMask );
 				if( updated ) {
 					VertexValue[ multiDeviceVertexID ] = fetchedVertexValues[ tidWithinCTA ];
