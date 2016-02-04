@@ -5,7 +5,7 @@ This repository contains a CUDA-based multi-GPU vertex-centric graph processing 
 - The make files are configured for sm 3.5. Please adjust this option according to your device CUDA compute capability.
 - You can use [this program](https://gist.github.com/farkhor/3852cbd7d29be77ae2ae) to minimize the vertex indices, without changing the graph structure. You can also use [this program](https://gist.github.com/farkhor/34aaccb593022fc9fe87) to create a PageRank-suitable input file from your edge-list.
 
-###Citing (temporary)###
+###Citing###
 ```shell
 @inproceedings{wsvr,
  author = {Khorasani, Farzad and Gupta, Rajiv and Bhuyan, Laxmi N.},
