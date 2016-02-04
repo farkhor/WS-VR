@@ -12,6 +12,7 @@ This repository contains a CUDA-based multi-GPU vertex-centric graph processing 
  title = {Scalable SIMD-Efficient Graph Processing on GPUs},
  booktitle = {Proceedings of the 24th International Conference on Parallel Architectures and Compilation Techniques},
  series = {PACT '15},
+ pages = {39--50},
  year = {2015}
 }
 ```
